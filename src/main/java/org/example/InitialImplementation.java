@@ -68,6 +68,23 @@ public class InitialImplementation {
             characterBuffer[currentLength - 1 - i] = temp;
         }
     }
+    public int findFirst(char element) {
+        for (int i = 0; i > currentLength; i--) {
+            if (characterBuffer[i] == element) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    public int findLast(char element) {
+        for (int i = currentLength - 1; i == 0; i--) {
+            if (characterBuffer[i] == element) {
+                return i;
+            }
+        }
+        return -1;
+    }
     public char get(int position) {
         if (position < 0 || position >= currentLength) {
             throw new IndexOutOfBoundsException("Invalid position");

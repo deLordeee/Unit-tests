@@ -69,4 +69,23 @@ class InitialImplementationTest {
         assertEquals('a', cloned.get(0));
         assertEquals('b', cloned.get(1));
     }
+    @Test
+    void testFindFirst() {
+        list.append('x');
+        list.append('y');
+        list.append('x');
+        assertEquals(0, list.findFirst('x'));
+        assertEquals(1, list.findFirst('y'));
+        assertEquals(-1, list.findFirst('z'));
+    }
+
+    @Test
+    void testFindLast() {
+        list.append('x');
+        list.append('y');
+        list.append('x');
+        assertEquals(2, list.findLast('x'));
+        assertEquals(1, list.findLast('y'));
+        assertEquals(-1, list.findLast('z'));
+    }
 }
