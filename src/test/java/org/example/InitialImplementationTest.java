@@ -18,6 +18,37 @@ class InitialImplementationTest {
         assertEquals(1, list.length());
         assertEquals('a', list.get(0));
     }
+    @Test
+    void testInsert() {
+        list.append('a');
+        list.insert('b', 1);
+        assertEquals(2, list.length());
+        assertEquals('b', list.get(1));
+    }
+    @Test
+    void testDelete() {
+        list.append('a');
+        assertEquals('a', list.delete(0));
+        assertEquals(0, list.length());
+    }
 
+    @Test
+    void testDeleteInvalidIndex() {
+        assertThrows(IndexOutOfBoundsException.class, () -> list.delete(0));
+    }
+
+    @Test
+    void testDeleteAll() {
+        list.append('a');
+        list.append('b');
+        list.append('a');
+        list.deleteAll('a');
+        assertEquals(1, list.length());
+        assertEquals('b', list.get(0));
+    }
+    @Test
+    void testInsertInvalidIndex() {
+        assertThrows(IndexOutOfBoundsException.class, () -> list.insert('a', 1));
+    }
 
 }
