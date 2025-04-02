@@ -135,37 +135,44 @@ public class SecondaryImplementation {
 
         Node current = head;
         Node previous = null;
-        int initialSize = size;
+        boolean found = false;
+
+
+        while (head != null && head.data == element) {
+            if (head.next == head) {
+                head = null;
+                size = 0;
+                return;
+            } else {
+                Node last = head;
+                while (last.next != head) {
+                    last = last.next;
+                }
+                head = head.next;
+                last.next = head;
+                current = head;
+                found = true;
+                size--;
+            }
+        }
+
 
         do {
             if (current.data == element) {
-                if (previous == null) {
-                    // Deleting head node
-                    if (head.next == head) {
-                        // Only one node in list
-                        head = null;
-                        size = 0;
-                        return;
-                    } else {
-                        // Find last node to update its next pointer
-                        Node last = head;
-                        while (last.next != head) {
-                            last = last.next;
-                        }
-                        head = head.next;
-                        last.next = head;
-                        current = head; // Move current to new head
-                    }
-                } else {
-                    previous.next = current.next;
-                    current = current.next;
-                }
+                previous.next = current.next;
                 size--;
+                found = true;
             } else {
                 previous = current;
-                current = current.next;
             }
-        } while (current != head && size < initialSize); // Prevent infinite loops
+            current = current.next;
+        } while (current != head);
+
+
+        if (found && previous != null && previous.next.data == element) {
+            previous.next = head;
+            size--;
+        }
     }
 
     public SecondaryImplementation clone() {
@@ -198,5 +205,40 @@ public class SecondaryImplementation {
 
         head.next = prev;
         head = prev;
+    }
+    public int findFirst(char element) {
+        if (head == null) {
+            return -1;
+        }
+
+        int index = 0;
+        Node current = head;
+
+        do {
+            if (current.data == element) {
+                return index;
+            }
+            current = current.next;
+            index++;
+        } while (current != head);
+
+        return -1;
+    }
+
+
+    public int findLast(char element) {
+        Node temp = head;
+        int index = -1;
+        int i = 0;
+        if (temp != null) {
+            do {
+                if (temp.data == element) {
+                    index = i;
+                }
+                temp = temp.next;
+                i++;
+            } while (temp != head);
+        }
+        return index;
     }
 }

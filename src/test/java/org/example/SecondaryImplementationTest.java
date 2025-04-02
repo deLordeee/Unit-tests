@@ -129,13 +129,13 @@ public class SecondaryImplementationTest {
         list.append('c');
         list.append('a');
 
-        // Action
+
         list.deleteAll('a');
 
-        // Verification
+
         assertEquals(2, list.length(), "Should remove all 'a' characters");
 
-        // Check remaining elements
+
         if (list.length() >= 1) {
             assertEquals('b', list.get(0), "First remaining element should be 'b'");
         }
@@ -143,7 +143,7 @@ public class SecondaryImplementationTest {
             assertEquals('c', list.get(1), "Second remaining element should be 'c'");
         }
 
-        // Verify circularity is maintained
+
         if (list.length() > 0) {
             Node head = list.getHeadForTesting();
             Node current = head;
@@ -167,9 +167,157 @@ public class SecondaryImplementationTest {
         assertEquals('c', list.get(0));
         assertEquals('b', list.get(1));
         assertEquals('a', list.get(2));
-        // Verify circularity is maintained
+
         SecondaryImplementation.Node head = list.getHeadForTesting();
         SecondaryImplementation.Node last = head.getNext().getNext();
         assertSame(head, last.getNext());
+    }
+    @Test
+    void testMultipleNodesCircularity() {
+        list.append('a');
+        list.append('b');
+        list.append('c');
+        SecondaryImplementation.Node head = list.getHeadForTesting();
+        SecondaryImplementation.Node last = head.getNext().getNext();
+        assertSame(head, last.getNext());
+    }
+
+
+    @Test
+    void testInsertInvalidIndex() {
+        assertThrows(IndexOutOfBoundsException.class, () -> list.insert('a', 1));
+    }
+
+    @Test
+    void testDeleteInvalidIndex() {
+        list.append('a');
+        assertThrows(IndexOutOfBoundsException.class, () -> list.delete(1));
+    }
+    @Test
+    void testFindFirstInEmptyList() {
+        assertEquals(-1, list.findFirst('a'),
+                "Should return -1 for empty list");
+    }
+
+    @Test
+    void testFindFirstSingleNode() {
+        list.append('a');
+        assertEquals(0, list.findFirst('a'),
+                "Should find character in single-node list");
+        assertEquals(-1, list.findFirst('b'),
+                "Should return -1 for non-existent character");
+    }
+
+    @Test
+    void testFindFirstMultipleNodes() {
+        list.append('a');  // index 0
+        list.append('b');  // index 1
+        list.append('c');  // index 2
+        list.append('a');  // index 3
+        list.append('d');  // index 4
+
+
+        assertEquals(0, list.findFirst('a'),
+                "Should find first occurrence of 'a'");
+
+        assertEquals(1, list.findFirst('b'),
+                "Should find first occurrence of 'b'");
+
+
+        assertEquals(2, list.findFirst('c'),
+                "Should find first occurrence of 'c'");
+
+
+        assertEquals(4, list.findFirst('d'),
+                "Should find first occurrence of 'd'");
+
+        assertEquals(-1, list.findFirst('z'),
+                "Should return -1 for non-existent character");
+    }
+
+    @Test
+    void testFindFirstCircularVerification() {
+        list.append('a');
+        list.append('b');
+        list.append('a');
+
+        int firstIndex = list.findFirst('a');
+        assertEquals(0, firstIndex);
+
+
+        SecondaryImplementation.Node node = list.getHeadForTesting();
+        for (int i = 0; i < firstIndex; i++) {
+            node = node.getNext();
+        }
+        assertEquals('a', node.getData());
+    }
+
+    @Test
+    void testFindLastInEmptyList() {
+        assertEquals(-1, list.findLast('a'),
+                "Should return -1 for empty list");
+    }
+
+    @Test
+    void testFindLastSingleNode() {
+        list.append('a');
+        assertEquals(0, list.findLast('a'),
+                "Should find character in single-node list");
+        assertEquals(-1, list.findLast('b'),
+                "Should return -1 for non-existent character");
+    }
+
+    @Test
+    void testFindLastMultipleNodes() {
+        list.append('a');
+        list.append('b');
+        list.append('c');
+        list.append('a');
+        list.append('d');
+
+        assertEquals(3, list.findLast('a'),
+                "Should find last occurrence of 'a'");
+        assertEquals(1, list.findLast('b'),
+                "Should find only occurrence of 'b'");
+        assertEquals(4, list.findLast('d'),
+                "Should find last character");
+        assertEquals(-1, list.findLast('z'),
+                "Should return -1 for non-existent character");
+    }
+
+    @Test
+    void testFindLastCircularVerification() {
+        list.append('a');
+        list.append('b');
+        list.append('a');
+        list.append('c');
+
+        int lastIndex = list.findLast('a');
+        assertEquals(2, lastIndex);
+
+
+        SecondaryImplementation.Node node = list.getHeadForTesting();
+        for (int i = 0; i < lastIndex; i++) {
+            node = node.getNext();
+        }
+        assertEquals('a', node.getData());
+
+
+        assertEquals('c', node.getNext().getData());
+    }
+
+    @Test
+    void testFindFirstLastWithFullCircle() {
+
+        list.append('a');
+        list.append('b');
+        list.append('a');
+        list.append('b');
+        list.append('a');
+
+        assertEquals(0, list.findFirst('a'));
+        assertEquals(4, list.findLast('a'));
+
+
     }
 }
