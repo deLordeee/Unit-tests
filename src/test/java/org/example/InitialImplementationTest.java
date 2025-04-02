@@ -50,5 +50,23 @@ class InitialImplementationTest {
     void testInsertInvalidIndex() {
         assertThrows(IndexOutOfBoundsException.class, () -> list.insert('a', 1));
     }
-
+    @Test
+    void testReverse() {
+        list.append('a');
+        list.append('b');
+        list.append('c');
+        list.reverse();
+        assertEquals('c', list.get(0));
+        assertEquals('b', list.get(1));
+        assertEquals('a', list.get(2));
+    }
+    @Test
+    void testClone() {
+        list.append('a');
+        list.append('b');
+        InitialImplementation cloned = list.clone();
+        assertEquals(2, cloned.length());
+        assertEquals('a', cloned.get(0));
+        assertEquals('b', cloned.get(1));
+    }
 }

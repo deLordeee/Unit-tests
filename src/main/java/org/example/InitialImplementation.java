@@ -54,7 +54,20 @@ public class InitialImplementation {
         }
         currentLength = newSize;
     }
+    public InitialImplementation clone() {
+        InitialImplementation clonedList = new InitialImplementation();
+        clonedList.characterBuffer = Arrays.copyOf(this.characterBuffer, this.currentLength);
+        clonedList.currentLength = this.currentLength;
+        return clonedList;
+    }
 
+    public void reverse() {
+        for (int i = 0; i < currentLength / 2; i++) {
+            char temp = characterBuffer[i];
+            characterBuffer[i] = characterBuffer[currentLength - 1 - i];
+            characterBuffer[currentLength - 1 - i] = temp;
+        }
+    }
     public char get(int position) {
         if (position < 0 || position >= currentLength) {
             throw new IndexOutOfBoundsException("Invalid position");
