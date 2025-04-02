@@ -61,6 +61,33 @@ public class SecondaryImplementationTest {
         SecondaryImplementation.Node node = list.getHeadNodeForTesting();
         assertSame(node, node.getNext());
     }
+    @Test
+    void testInsertAtBeginning() {
+        list.append('b');
+        list.insert('a', 0);
+        assertEquals(2, list.length());
+        assertEquals('a', list.get(0));
+        assertEquals('b', list.get(1));
+    }
 
+    @Test
+    void testInsertAtEnd() {
+        list.append('a');
+        list.insert('b', 1);
+        assertEquals(2, list.length());
+        assertEquals('a', list.get(0));
+        assertEquals('b', list.get(1));
+    }
+
+    @Test
+    void testInsertInMiddle() {
+        list.append('a');
+        list.append('c');
+        list.insert('b', 1);
+        assertEquals(3, list.length());
+        assertEquals('a', list.get(0));
+        assertEquals('b', list.get(1));
+        assertEquals('c', list.get(2));
+    }
 
 }

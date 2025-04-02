@@ -55,7 +55,35 @@ public class SecondaryImplementation {
         size++;
     }
 
+    public void insert(char element, int index) {
+        if (index < 0 || index > size) {
+            throw new IndexOutOfBoundsException("Invalid index");
+        }
 
+        Node newNode = new Node(element);
+        if (index == 0) {
+            if (head == null) {
+                head = newNode;
+                head.next = head;
+            } else {
+                Node temp = head;
+                while (temp.next != head) {
+                    temp = temp.next;
+                }
+                newNode.next = head;
+                head = newNode;
+                temp.next = head;
+            }
+        } else {
+            Node temp = head;
+            for (int i = 0; i < index - 1; i++) {
+                temp = temp.next;
+            }
+            newNode.next = temp.next;
+            temp.next = newNode;
+        }
+        size++;
+    }
     public char get(int index) {
         if (index < 0 || index >= size) {
             throw new IndexOutOfBoundsException("Invalid index");
