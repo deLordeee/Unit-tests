@@ -254,6 +254,6 @@ public class SecondaryImplementation {
         do {
             append(temp.data);
             temp = temp.next;
-        } while (temp == otherList.head);
+        } while (temp != otherList.head);
     }
 }
