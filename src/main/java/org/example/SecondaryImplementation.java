@@ -131,42 +131,50 @@ public class SecondaryImplementation {
 
 
     public void deleteAll(char element) {
-        if (head == null) return;
+    if (head == null) return;
 
-        Node current = head;
-        Node previous = null;
-        int initialSize = size;
+    Node current = head;
+    Node previous = null;
+    boolean found = false;
 
-        do {
-            if (current.data == element) {
-                if (previous == null) {
-                    // Deleting head node
-                    if (head.next == head) {
-                        // Only one node in list
-                        head = null;
-                        size = 0;
-                        return;
-                    } else {
-                        // Find last node to update its next pointer
-                        Node last = head;
-                        while (last.next != head) {
-                            last = last.next;
-                        }
-                        head = head.next;
-                        last.next = head;
-                        current = head; // Move current to new head
-                    }
-                } else {
-                    previous.next = current.next;
-                    current = current.next;
-                }
-                size--;
-            } else {
-                previous = current;
-                current = current.next;
+    
+    while (head != null && head.data == element) {
+        if (head.next == head) {
+            head = null;
+            size = 0;
+            return;
+        } else {
+            Node last = head;
+            while (last.next != head) {
+                last = last.next;
             }
-        } while (current != head && size < initialSize); // Prevent infinite loops
+            head = head.next;
+            last.next = head;
+            current = head;
+            found = true;
+            size--;
+        }
     }
+
+   
+    do {
+        if (current.data == element) {
+            previous.next = current.next;
+            size--;
+            found = true;
+        } else {
+            previous = current;
+        }
+        current = current.next;
+    } while (current != head);
+
+   
+    if (found && previous != null && previous.next.data == element) {
+        previous.next = head;
+        size--;
+    }
+}
+
 
     public SecondaryImplementation clone() {
         SecondaryImplementation newList = new SecondaryImplementation();
