@@ -1,4 +1,4 @@
- name: Java CI
+name: Java CI
 
 on:
   push:
@@ -22,8 +22,6 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
 
-      - name: Build and test
+      - name: Build and run tests
         run: |
-          javac -cp .:junit-5.9.1.jar org.junit.jupiter.api.Assertions ArrayListCharacter.java ArrayListCharacterTest.java
-          java -jar junit-platform-console-standalone-1.9.1.jar --class-path . --scan-class-path
-
+          mvn clean test
