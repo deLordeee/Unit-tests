@@ -88,4 +88,15 @@ class InitialImplementationTest {
         assertEquals(1, list.findLast('y'));
         assertEquals(-1, list.findLast('z'));
     }
+    @Test
+    void testClear() {
+
+        list.append('a');
+        list.append('b');
+        list.clear();
+        assertEquals(0, list.length(), "List should be empty after clear()");
+
+
+        assertDoesNotThrow(() -> list.clear());
+    }
 }

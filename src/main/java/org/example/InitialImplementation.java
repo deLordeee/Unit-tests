@@ -85,6 +85,15 @@ public class InitialImplementation {
         }
         return -1;
     }
+    public void clear() {
+        currentLength = 0;
+    }
+
+    public void extend(InitialImplementation elements) {
+        for (int i = 0; i < elements.currentLength; i++) {
+            this.append(elements.characterBuffer[i]);
+        }
+    }
     public char get(int position) {
         if (position < 0 || position >= currentLength) {
             throw new IndexOutOfBoundsException("Invalid position");
