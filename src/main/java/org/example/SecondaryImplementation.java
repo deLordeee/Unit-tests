@@ -241,4 +241,19 @@ public class SecondaryImplementation {
         }
         return index;
     }
+    public void clear() {
+        head = null;
+        size = 0;
+    }
+
+
+    public void extend(SecondaryImplementation otherList) {
+        if (otherList.head == null) return;
+
+        Node temp = otherList.head;
+        do {
+            append(temp.data);
+            temp = temp.next;
+        } while (temp == otherList.head);
+    }
 }

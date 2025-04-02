@@ -51,7 +51,7 @@ public class SecondaryImplementationTest {
 
         assertEquals('a', first.getData());
         assertEquals('b', second.getData());
-        assertSame(first, second.getNext()); // Verify circularity
+        assertSame(first, second.getNext());
     }
 
 
@@ -122,7 +122,7 @@ public class SecondaryImplementationTest {
     }
     @Test
     void testDeleteAll() {
-        // Setup
+
         list.append('a');
         list.append('b');
         list.append('a');
@@ -210,11 +210,11 @@ public class SecondaryImplementationTest {
 
     @Test
     void testFindFirstMultipleNodes() {
-        list.append('a');  // index 0
-        list.append('b');  // index 1
-        list.append('c');  // index 2
-        list.append('a');  // index 3
-        list.append('d');  // index 4
+        list.append('a');
+        list.append('b');
+        list.append('c');
+        list.append('a');
+        list.append('d');
 
 
         assertEquals(0, list.findFirst('a'),
@@ -319,5 +319,121 @@ public class SecondaryImplementationTest {
         assertEquals(4, list.findLast('a'));
 
 
+    }
+
+    @Test
+    void testClearEmptyList() {
+        list.clear();
+        assertEquals(0, list.length());
+        assertNull(list.getHeadForTesting());
+    }
+
+    @Test
+    void testClearSingleElementList() {
+        list.append('a');
+        list.clear();
+        assertEquals(0, list.length());
+        assertNull(list.getHeadForTesting());
+    }
+
+    @Test
+    void testClearMultipleElements() {
+        list.append('a');
+        list.append('b');
+        list.append('c');
+        list.clear();
+        assertEquals(0, list.length());
+        assertNull(list.getHeadForTesting());
+
+
+        list.append('x');
+        assertEquals(1, list.length());
+        assertEquals('x', list.get(0));
+    }
+
+
+    @Test
+    void testExtendWithEmptyList() {
+        SecondaryImplementation other = new SecondaryImplementation();
+        list.append('a');
+        list.extend(other);
+        assertEquals(1, list.length());
+        assertEquals('a', list.get(0));
+    }
+
+    @Test
+    void testExtendWithSingleElementList() {
+        SecondaryImplementation other = new SecondaryImplementation();
+        other.append('b');
+
+        list.append('a');
+        list.extend(other);
+
+        assertEquals(2, list.length());
+        assertEquals('a', list.get(0));
+        assertEquals('b', list.get(1));
+
+
+        SecondaryImplementation.Node head = list.getHeadForTesting();
+        SecondaryImplementation.Node last = head.getNext();
+        assertSame(head, last.getNext());
+    }
+
+    @Test
+    void testExtendWithMultipleElements() {
+        SecondaryImplementation other = new SecondaryImplementation();
+        other.append('b');
+        other.append('c');
+        other.append('d');
+
+        list.append('a');
+        list.extend(other);
+
+        assertEquals(4, list.length());
+        assertEquals('a', list.get(0));
+        assertEquals('b', list.get(1));
+        assertEquals('c', list.get(2));
+        assertEquals('d', list.get(3));
+
+
+        SecondaryImplementation.Node current = list.getHeadForTesting();
+        for (int i = 0; i < 4; i++) {
+            current = current.getNext();
+        }
+        assertSame(list.getHeadForTesting(), current);
+    }
+
+    @Test
+    void testExtendEmptyListWithNonEmpty() {
+        SecondaryImplementation other = new SecondaryImplementation();
+        other.append('a');
+        other.append('b');
+
+        list.extend(other);
+
+        assertEquals(2, list.length());
+        assertEquals('a', list.get(0));
+        assertEquals('b', list.get(1));
+    }
+
+
+
+    @Test
+    void testExtendMaintainsSeparateLists() {
+        SecondaryImplementation other = new SecondaryImplementation();
+        other.append('x');
+        other.append('y');
+
+        list.append('a');
+        list.extend(other);
+        other.append('z');
+
+        assertEquals(3, list.length());
+        assertEquals('a', list.get(0));
+        assertEquals('x', list.get(1));
+        assertEquals('y', list.get(2));
+
+
+        assertEquals(3, other.length());
     }
 }
