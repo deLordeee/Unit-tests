@@ -54,7 +54,9 @@ public class SecondaryImplementation {
         }
         size++;
     }
-
+    Node getHeadForTesting() {
+        return head;
+    }
     public void insert(char element, int index) {
         if (index < 0 || index > size) {
             throw new IndexOutOfBoundsException("Invalid index");
@@ -96,6 +98,105 @@ public class SecondaryImplementation {
         return temp.data;
     }
 
+    public char delete(int index) {
+        if (index < 0 || index >= size) {
+            throw new IndexOutOfBoundsException("Invalid index");
+        }
+
+        Node temp = head;
+        char deletedData;
+
+        if (index == 0) {
+            deletedData = head.data;
+            if (head.next == head) {
+                head = null;
+            } else {
+                Node last = head;
+                while (last.next != head) {
+                    last = last.next;
+                }
+                head = head.next;
+                last.next = head;
+            }
+        } else {
+            for (int i = 0; i < index - 1; i++) {
+                temp = temp.next;
+            }
+            deletedData = temp.next.data;
+            temp.next = temp.next.next;
+        }
+        size--;
+        return deletedData;
+    }
 
 
+    public void deleteAll(char element) {
+        if (head == null) return;
+
+        Node current = head;
+        Node previous = null;
+        int initialSize = size;
+
+        do {
+            if (current.data == element) {
+                if (previous == null) {
+                    // Deleting head node
+                    if (head.next == head) {
+                        // Only one node in list
+                        head = null;
+                        size = 0;
+                        return;
+                    } else {
+                        // Find last node to update its next pointer
+                        Node last = head;
+                        while (last.next != head) {
+                            last = last.next;
+                        }
+                        head = head.next;
+                        last.next = head;
+                        current = head; // Move current to new head
+                    }
+                } else {
+                    previous.next = current.next;
+                    current = current.next;
+                }
+                size--;
+            } else {
+                previous = current;
+                current = current.next;
+            }
+        } while (current != head && size < initialSize); // Prevent infinite loops
+    }
+
+    public SecondaryImplementation clone() {
+        SecondaryImplementation newList = new SecondaryImplementation();
+        Node temp = head;
+        if (temp != null) {
+            do {
+                newList.append(temp.data);
+                temp = temp.next;
+            } while (temp != head);
+        }
+        return newList;
+    }
+
+
+    public void reverse() {
+        if (head == null || head.next == head) {
+            return;
+        }
+
+        Node prev = null;
+        Node current = head;
+        Node next;
+        do {
+            next = current.next;
+            current.next = prev;
+            prev = current;
+            current = next;
+        } while (current != head);
+
+        head.next = prev;
+        head = prev;
+    }
 }

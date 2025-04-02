@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-
+import org.example.SecondaryImplementation.Node;
 import org.junit.jupiter.api.BeforeEach;
 
 public class SecondaryImplementationTest {
@@ -89,5 +89,87 @@ public class SecondaryImplementationTest {
         assertEquals('b', list.get(1));
         assertEquals('c', list.get(2));
     }
+    @Test
+    void testDeleteOnlyElement() {
+        list.append('a');
+        char removed = list.delete(0);
+        assertEquals('a', removed);
+        assertEquals(0, list.length());
+    }
 
+    @Test
+    void testDeleteFirstElement() {
+        list.append('a');
+        list.append('b');
+        list.append('c');
+        char removed = list.delete(0);
+        assertEquals('a', removed);
+        assertEquals(2, list.length());
+        assertEquals('b', list.get(0));
+        assertEquals('c', list.get(1));
+    }
+
+    @Test
+    void testDeleteLastElement() {
+        list.append('a');
+        list.append('b');
+        list.append('c');
+        char removed = list.delete(2);
+        assertEquals('c', removed);
+        assertEquals(2, list.length());
+        assertEquals('a', list.get(0));
+        assertEquals('b', list.get(1));
+    }
+    @Test
+    void testDeleteAll() {
+        // Setup
+        list.append('a');
+        list.append('b');
+        list.append('a');
+        list.append('c');
+        list.append('a');
+
+        // Action
+        list.deleteAll('a');
+
+        // Verification
+        assertEquals(2, list.length(), "Should remove all 'a' characters");
+
+        // Check remaining elements
+        if (list.length() >= 1) {
+            assertEquals('b', list.get(0), "First remaining element should be 'b'");
+        }
+        if (list.length() >= 2) {
+            assertEquals('c', list.get(1), "Second remaining element should be 'c'");
+        }
+
+        // Verify circularity is maintained
+        if (list.length() > 0) {
+            Node head = list.getHeadForTesting();
+            Node current = head;
+            int count = 0;
+            do {
+                count++;
+                current = current.getNext();
+            } while (current != head && count <= list.length());
+
+            assertEquals(count, list.length(), "Circular structure broken");
+        }
+    }
+
+    @Test
+    void testReverse() {
+        list.append('a');
+        list.append('b');
+        list.append('c');
+        list.reverse();
+        assertEquals(3, list.length());
+        assertEquals('c', list.get(0));
+        assertEquals('b', list.get(1));
+        assertEquals('a', list.get(2));
+        // Verify circularity is maintained
+        SecondaryImplementation.Node head = list.getHeadForTesting();
+        SecondaryImplementation.Node last = head.getNext().getNext();
+        assertSame(head, last.getNext());
+    }
 }
