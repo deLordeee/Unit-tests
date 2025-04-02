@@ -69,7 +69,7 @@ public class InitialImplementation {
         }
     }
     public int findFirst(char element) {
-        for (int i = 0; i > currentLength; i--) {
+        for (int i = 0; i < currentLength; i++) {
             if (characterBuffer[i] == element) {
                 return i;
             }
